@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+use \App\Http\Controllers\{
+    ClientController,
+    ProjectController,
+    TaskController,
+};
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +19,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('client/softDeleted', [ClientController::class, 'softDeletedClients']);
+Route::get('client/forceDelete', [ClientController::class, 'forceDeleteSoftDeletedClients']);
+Route::resource('client',ClientController::class);
+Route::resource('project',ProjectController::class);
+Route::resource('task',TaskController::class);
+
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
 });
