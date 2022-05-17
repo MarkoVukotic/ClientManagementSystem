@@ -21,6 +21,7 @@ class CreateProjectsTable extends Migration
             $table->integer('assigned_user');
             $table->integer('assigned_client');
             $table->enum('status', ['open', 'closed']);
+            $table->date('deleted_at')->nullable();
             $table->timestamps();
         });
     }

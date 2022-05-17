@@ -19,10 +19,31 @@ use \App\Http\Controllers\{
 |
 */
 
+/*
+|--------------------------------------------------------------------------
+| Client Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('client/softDeleted', [ClientController::class, 'softDeletedClients']);
 Route::get('client/forceDelete', [ClientController::class, 'forceDeleteSoftDeletedClients']);
 Route::resource('client',ClientController::class);
+
+/*
+|--------------------------------------------------------------------------
+| Project Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('project/softDeleted', [ProjectController::class, 'softDeletedProjects']);
+Route::get('project/forceDelete', [ProjectController::class, 'forceDeleteSoftDeletedProjects']);
 Route::resource('project',ProjectController::class);
+
+/*
+|--------------------------------------------------------------------------
+| Task Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('task/softDeleted', [TaskController::class, 'softDeletedTasks']);
+Route::get('task/forceDelete', [TaskController::class, 'forceDeleteSoftDeletedTasks']);
 Route::resource('task',TaskController::class);
 
 

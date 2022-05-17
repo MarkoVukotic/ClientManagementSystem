@@ -21,6 +21,7 @@ class CreateTasksTable extends Migration
             $table->date('deadline');
             $table->integer('project_id');
             $table->integer('assignee');
+            $table->date('deleted_at')->nullable();
             $table->timestamps();
         });
     }

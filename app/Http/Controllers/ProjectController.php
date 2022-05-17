@@ -34,30 +34,11 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request)
     {
         try {
-            $data = $request->all();
-
-            $new_project = Project::created([
-                'title' => $data['title'],
-                'description' => $data['description'],
-                'deadline' => $data['deadline'],
-                'status' => $data['status'],
-                'assigned_user' => $data['assigned_user'],
-                'assigned_client' => $data['assigned_client'],
-            ]);
-
-//dd($new_project);
-//            if($new_project){
-//                dd('Its created');
-//            }else {
-//                dd("its not created");
-//            }
-
-
-
-
+            $new_project = Project::create($request->validated());
+            return output($new_project);
         }catch (\Exception $exception){
             echo $exception->getMessage();
         }
@@ -94,7 +75,21 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        try {
+            $data = $request->get('data');
+            $update_project = $project->update([
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'deadline' => $data['deadline'],
+                'status' => $data['status'],
+                'assigned_user' => $data['assigned_user'],
+                'assigned_client' => $data['assigned_client'],
+            ]);
+            return output($update_project);
+
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+        }
     }
 
     /**
@@ -105,6 +100,29 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $delete_project = $project->delete();
+        return output($delete_project);
+    }
+
+    public function softDeletedProjects()
+    {
+        try {
+            $soft_deleted_projects = Project::withTrashed()->where('id', 1)->get();
+            return output($soft_deleted_projects);
+
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+        }
+    }
+
+    public function forceDeleteSoftDeletedProjects()
+    {
+        try {
+            $force_deleted_projects = Project::withTrashed()->where('id', 1)->forceDelete();
+            return output($force_deleted_projects);
+
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+        }
     }
 }
