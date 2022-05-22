@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Client;
 use App\Models\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use \Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 use \App\Models\User;
 
@@ -38,11 +39,12 @@ class ProjectTest extends TestCase
                 'assigned_client' => $client->id,
             ];
 
-            $response = $this->post('/project', $params)->getContent();
-            $response_decoded = json_decode($response, true);
+            $response = $this->post('/project', $params);
 
-            $this->assertDatabaseHas('projects', $response_decoded['data']);
-
+            $response->assertRedirect();
+            $this->assertTrue(Session::has('success'));
+            $this->assertEquals("New project have been created", Session::get('success'));
+            $this->assertDatabaseHas('projects', $params);
         }
 
         /**
