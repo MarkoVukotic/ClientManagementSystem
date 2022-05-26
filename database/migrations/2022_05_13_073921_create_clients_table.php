@@ -21,6 +21,8 @@ class CreateClientsTable extends Migration
             $table->string('country');
             $table->enum('priority', ['low', 'medium', 'high']);
             $table->date('deleted_at')->nullable();
+            $table->unsignedBigInteger('project_id');
+            $table->foreign('project_id')->references('id')->on('projects');
             $table->timestamps();
         });
     }

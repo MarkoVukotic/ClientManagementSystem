@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ClientFactory extends Factory
@@ -19,6 +20,7 @@ class ClientFactory extends Factory
             'email' => $this->faker->safeEmail,
             'country' => $this->faker->country,
             'priority' => $this->faker->randomElement(['low', 'medium', 'high']),
+            'project_id' => Project::factory()->create(),
         ];
     }
 }

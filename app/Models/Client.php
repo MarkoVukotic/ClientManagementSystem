@@ -13,4 +13,8 @@ class Client extends Model
 
     use HasFactory;
     use SoftDeletes;
+
+    public function project(){
+        $this->hasOne('App\Models\Project');
+    }
 }

@@ -14,4 +14,9 @@ class Project extends Model
     protected $table = 'projects';
 
     protected $guarded = [];
+
+    public function client(){
+        $this->belongsTo('App\Models\Clients');
+    }
+
 }

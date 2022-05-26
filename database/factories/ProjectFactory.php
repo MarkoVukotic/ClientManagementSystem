@@ -24,8 +24,8 @@ class ProjectFactory extends Factory
             'description' => $this->faker->text(20),
             'deadline' => $deadline,
             'status' => $this->faker->randomElement(['open', 'closed']),
-            'assigned_user' => User::factory()->create(),
-            'assigned_client' => Client::factory()->create()
+            'assigned_user' => '1',
+            'assigned_client' => '1'
             ];
     }
 }
