@@ -48,7 +48,6 @@ class ClientTest extends TestCase
             'email' => 'markovukotic@test.com',
             'country' => 'Montenegro',
             'priority' => 'low',
-            'project_id' => $project->id
         ];
 
         $response = $this->post('/client', $params)->getContent();

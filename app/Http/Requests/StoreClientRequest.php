@@ -29,7 +29,6 @@ class StoreClientRequest extends FormRequest
             'email' => 'required',
             'country' => 'required',
             'priority' => 'required',
-            'project_id' => 'required'
         ];
     }
 }

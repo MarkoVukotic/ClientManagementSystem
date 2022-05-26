@@ -16,7 +16,7 @@ class Project extends Model
     protected $guarded = [];
 
     public function client(){
-        $this->belongsTo('App\Models\Clients');
+      return $this->belongsTo(Client::class);
     }
 
 }
