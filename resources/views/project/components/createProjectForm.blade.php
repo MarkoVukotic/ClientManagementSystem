@@ -9,7 +9,7 @@
     @enderror
     <div class="form-group mb-3">
         <label for="description">Description</label>
-        <textarea id="description" name="description" class="form-control"></textarea>
+        <textarea id="description" name="description" class="form-control">{{old('description')}}</textarea>
     </div>
     @error('description')
     <div class="text-danger mb-2">{{$message}}</div>
