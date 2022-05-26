@@ -12,6 +12,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <title>@yield('title')</title>
 </head>
+@include('project.components.navigationBar')
 <body class="container">
 <div>
     @yield('content')
