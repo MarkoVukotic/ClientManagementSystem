@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\Client;
+use App\Models\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -39,6 +40,7 @@ class ClientTest extends TestCase
     public function does_it_create_new_client()
     {
         $this->withoutExceptionHandling();
+        $project = Project::factory()->create();
 
         $params = [
             'first_name' => 'Marko',

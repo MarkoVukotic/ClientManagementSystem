@@ -38,7 +38,7 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         try {
-            $new_project = Project::create($request->validated());
+            Project::create($request->validated());
             return redirect('project.index')->with('success', 'New project have been created');
         } catch (\Exception $exception) {
             echo $exception->getMessage();
