@@ -24,6 +24,7 @@ use \App\Http\Controllers\{
 | Client Routes
 |--------------------------------------------------------------------------
 */
+Route::get('client/deleteClient', [ClientController::class, 'destroy'])->name('client.delete');
 Route::get('client/softDeleted', [ClientController::class, 'softDeletedClients']);
 Route::get('client/forceDelete', [ClientController::class, 'forceDeleteSoftDeletedClients']);
 Route::resource('client',ClientController::class);
@@ -48,5 +49,5 @@ Route::resource('task',TaskController::class);
 
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard.home');
 });

@@ -17,9 +17,8 @@ class ClientController extends Controller
     public function index()
     {
         try {
-            $clients = Client::select('*')->get();
-            return output($clients);
-
+            $clients = Client::orderBy('id', 'DESC')->paginate(15);
+            return view('client.index')->with(['clients' => $clients]);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
@@ -32,7 +31,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        return view('client.show');
     }
 
     /**
@@ -44,9 +43,8 @@ class ClientController extends Controller
     public function store(StoreClientRequest $request)
     {
         try {
-            $new_client = Client::create($request->validated());
-            return output($new_client);
-
+            Client::create($request->validated());
+            return redirect(route('client.index'))->with('success', 'New client have been created');
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
@@ -71,7 +69,7 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-
+        return view('client.edit')->with(['client' => $client]);
     }
 
     /**
@@ -84,15 +82,14 @@ class ClientController extends Controller
     public function update(Request $request, Client $client)
     {
         try {
-            $data = $request->get('data');
-            $update_client = $client->update([
-                'first_name' => $data['first_name'],
-                'last_name' => $data['last_name'],
-                'email' => $data['email'],
-                'country' => $data['country'],
-                'priority' => $data['priority'],
+            $client->update([
+                'first_name' => $request->get('first_name'),
+                'last_name' => $request->get('last_name'),
+                'email' => $request->get('email'),
+                'country' => $request->get('country'),
+                'priority' => $request->get('priority'),
             ]);
-            return output($update_client);
+            return redirect('client')->with('success', 'Client have been successfully updated');
 
         } catch (\Exception $exception) {
             echo $exception->getMessage();
@@ -105,12 +102,11 @@ class ClientController extends Controller
      * @param \App\Models\Client $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Client $client)
+    public function destroy(Request $request)
     {
         try {
-            $delete_client = $client->delete();
-            return output($delete_client);
-
+            Client::where('id', $request->get('id'))->delete();
+            return redirect('client')->with('success', 'Client have been successfully deleted');
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }

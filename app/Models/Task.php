@@ -11,6 +11,6 @@ class Task extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $table = 'tasks';
+    protected $table = 'task';
     protected $guarded = [];
 }

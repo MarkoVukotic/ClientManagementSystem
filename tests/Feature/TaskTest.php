@@ -42,7 +42,7 @@ class TaskTest extends TestCase
         $response = $this->post('/task', $params)->getContent();
         $response_decoded = json_decode($response, true);
 
-        $this->assertDatabaseHas('tasks', $response_decoded['data']);
+        $this->assertDatabaseHas('task', $response_decoded['data']);
 
     }
 
@@ -93,7 +93,7 @@ class TaskTest extends TestCase
         $response_decoded = json_decode($response, true);
 
         $this->assertEquals('success', $response_decoded['status']);
-        $this->assertDatabaseHas('tasks', $params['data']);
+        $this->assertDatabaseHas('task', $params['data']);
     }
 
     /**
@@ -109,7 +109,7 @@ class TaskTest extends TestCase
         $response_decoded = json_decode($response, true);
 
         $this->assertEquals('success', $response_decoded['status']);
-        $this->assertSoftDeleted('tasks');
+        $this->assertSoftDeleted('task');
     }
 
     /**
@@ -144,7 +144,7 @@ class TaskTest extends TestCase
         $response_decoded = json_decode($response, true);
 
         $this->assertEquals('success', $response_decoded['status']);
-        $this->assertDatabaseMissing('tasks', $params);
+        $this->assertDatabaseMissing('task', $params);
     }
 
 }

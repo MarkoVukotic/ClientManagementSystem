@@ -24,7 +24,8 @@ class ClientTest extends TestCase
     /**
      * @test
      */
-    public function does_it_return_all_the_clients_there_are_in_the_database(){
+    public function does_it_return_all_the_clients_there_are_in_the_database()
+    {
         $this->withoutExceptionHandling();
         Client::factory(5)->create();
 
@@ -113,7 +114,7 @@ class ClientTest extends TestCase
         $response_decoded = json_decode($response, true);
 
         $this->assertEquals('success', $response_decoded['status']);
-        $this->assertSoftDeleted('clients');
+        $this->assertSoftDeleted('client');
     }
 
     /**
@@ -136,7 +137,8 @@ class ClientTest extends TestCase
     /**
      * @test
      */
-    public function does_it_force_delete_safe_deleted_clients(){
+    public function does_it_force_delete_safe_deleted_clients()
+    {
         $this->withoutExceptionHandling();
         $old_client_data = Client::factory()->create(['id' => 1]);
         $params = ['id' => 1,];

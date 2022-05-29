@@ -8,13 +8,14 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{asset('js/custom.js')}}" defer></script>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <title>@yield('title')</title>
 </head>
-@include('project.components.navigationBar')
+@include('layouts.components.navigationBar')
 <body class="container">
-<div>
+<div style="margin: 2em 7em;">
     @yield('content')
 </div>
 </body>

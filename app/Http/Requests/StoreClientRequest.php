@@ -26,7 +26,7 @@ class StoreClientRequest extends FormRequest
         return [
             'first_name' => 'required|max:15',
             'last_name' => 'required|max:20',
-            'email' => 'required',
+            'email' => ['required', 'max:70', 'email', 'unique:clients'],
             'country' => 'required',
             'priority' => 'required',
         ];
