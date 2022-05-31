@@ -15,6 +15,7 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="/client/create">Create Client</a></li>
                         <li><a class="dropdown-item" href="/client">All Clients</a></li>
+                        <li><a class="dropdown-item" href="/client/best">Best Clients</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">

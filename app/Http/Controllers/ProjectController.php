@@ -84,7 +84,7 @@ class ProjectController extends Controller
                 'deadline' => $data['deadline'],
                 'status' => $data['status'],
                 'assigned_user' => $data['assigned_user'],
-                'assigned_client' => $data['assigned_client'],
+                'client_id' => $data['client_id'],
             ]);
             return output($update_project);
 

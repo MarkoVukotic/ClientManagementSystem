@@ -21,8 +21,8 @@ class CreateProjectsTable extends Migration
             $table->integer('assigned_user');
             $table->enum('status', ['open', 'closed']);
             $table->date('deleted_at')->nullable();
-            $table->unsignedBigInteger('assigned_client');
-            $table->foreign('assigned_client')->references('id')->on('clients')->onDelete('cascade');
+            $table->unsignedBigInteger('client_id');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->timestamps();
         });
     }

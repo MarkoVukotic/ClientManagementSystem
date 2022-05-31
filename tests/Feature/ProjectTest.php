@@ -36,7 +36,7 @@ class ProjectTest extends TestCase
                 'deadline' => '2022-05-17',
                 'status' => 'open',
                 'assigned_user' => $user->id,
-                'assigned_client' => $client->id,
+                'client_id' => $client->id,
             ];
 
             $response = $this->post('/project', $params);
@@ -82,7 +82,7 @@ class ProjectTest extends TestCase
                 'deadline' => '2022-05-17',
                 'status' => 'open',
                 'assigned_user' => $user->id,
-                'assigned_client' => $client->id,
+                'client_id' => $client->id,
             ]
         ];
 

@@ -29,7 +29,7 @@ class StoreProjectRequest extends FormRequest
             'deadline' => 'required',
             'status' => 'required',
             'assigned_user' => 'required',
-            'assigned_client' => 'required',
+            'client_id' => 'required',
         ];
     }
 }

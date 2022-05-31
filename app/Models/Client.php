@@ -15,6 +15,6 @@ class Client extends Model
     use SoftDeletes;
 
     public function project(){
-        return $this->hasOne(Project::class);
+        return $this->hasMany(Project::class);
     }
 }

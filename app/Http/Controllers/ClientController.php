@@ -132,4 +132,13 @@ class ClientController extends Controller
             echo $exception->getMessage();
         }
     }
+
+    public function bestClients(){
+        try {
+            $clients = Client::has('project', '>=', 3)->orderBy('id', 'DESC')->paginate(15);
+            return view('client.best')->with(['clients' => $clients]);
+        }catch (\Exception $exception){
+            echo $exception->getMessage();
+        }
+    }
 }
