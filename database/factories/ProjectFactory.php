@@ -20,7 +20,7 @@ class ProjectFactory extends Factory
         $deadline = Carbon::createFromFormat('Y-m-d H:i:s', $starts_at)->addDays(15)->toArray()['formatted'];
 
         return [
-            'title' => $this->faker->title,
+            'title' => $this->faker->word,
             'description' => $this->faker->text(20),
             'deadline' => $deadline,
             'status' => $this->faker->randomElement(['open', 'closed']),

@@ -19,4 +19,14 @@ class Project extends Model
       return $this->belongsTo(Client::class);
     }
 
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = strtoupper($value);
+    }
+
+    public function getTitleAttribute($value)
+    {
+        $this->attributes['title'] = ucfirst(strtolower($value));
+    }
+
 }
