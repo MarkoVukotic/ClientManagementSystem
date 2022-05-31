@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreClientRequest;
 use App\Models\Client;
-use App\Models\Project;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -18,7 +17,7 @@ class ClientController extends Controller
     {
         try {
             $clients = Client::orderBy('id', 'DESC')->paginate(15);
-            return view('client.index')->with(['clients' => $clients]);
+            return response()->view('client.index', ['clients' => $clients]);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
@@ -27,7 +26,7 @@ class ClientController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create()
     {
@@ -38,7 +37,7 @@ class ClientController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreClientRequest $request)
     {
@@ -65,7 +64,7 @@ class ClientController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\Client $client
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function edit(Client $client)
     {
@@ -77,7 +76,7 @@ class ClientController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Client $client
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
     public function update(Request $request, Client $client)
     {
@@ -100,7 +99,7 @@ class ClientController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Client $client
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
     public function destroy(Request $request)
     {

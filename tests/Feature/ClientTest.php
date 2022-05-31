@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Client;
 use App\Models\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 
 class ClientTest extends TestCase
@@ -27,12 +28,16 @@ class ClientTest extends TestCase
     public function does_it_return_all_the_clients_there_are_in_the_database()
     {
         $this->withoutExceptionHandling();
-        Client::factory(5)->create();
+        Client::factory(15)->create([
+            'first_name' => 'First Name'
+        ]);
 
-        $response = $this->get('/client')->getContent();
-        $decoded_response = json_decode($response, true);
+        $response = $this->get('/client');
 
-        $this->assertEquals(5, sizeof($decoded_response['data']));
+        $response->assertStatus(200);
+        $response->assertViewIs('client.index');
+        $response->assertViewHas('clients');
+        $response->assertSee('First Name');
     }
 
     /**
@@ -41,8 +46,6 @@ class ClientTest extends TestCase
     public function does_it_create_new_client()
     {
         $this->withoutExceptionHandling();
-        $project = Project::factory()->create();
-
         $params = [
             'first_name' => 'Marko',
             'last_name' => 'Vukotic',
@@ -51,11 +54,13 @@ class ClientTest extends TestCase
             'priority' => 'low',
         ];
 
-        $response = $this->post('/client', $params)->getContent();
-        $response_decoded = json_decode($response, true);
+        $response = $this->post('/client', $params);
 
-        $this->assertDatabaseHas('clients', $response_decoded['data']);
-
+        $response->assertStatus(302);
+        $response->assertRedirect('/client');
+        $this->assertTrue(Session::has('success'));
+        $this->assertEquals("New client have been created", Session::get('success'));
+        $this->assertDatabaseHas('clients', $params);
     }
 
     /**
@@ -84,21 +89,20 @@ class ClientTest extends TestCase
         $this->withoutExceptionHandling();
         $old_client_data = Client::factory()->create(['id' => 1]);
         $params = [
-            'id' => 1,
-            'data' => [
-                'first_name' => 'Marko',
-                'last_name' => 'Vukotic',
-                'email' => 'markovukotic@test.com',
-                'country' => 'Montenegro',
-                'priority' => 'low',
-            ]
+            'first_name' => 'Marko Updated',
+            'last_name' => 'Vukotic',
+            'email' => 'markovukotic@test.com',
+            'country' => 'Montenegro',
+            'priority' => 'low',
         ];
 
-        $response = $this->patch('/client/' . $old_client_data->id, $params)->getContent();
-        $response_decoded = json_decode($response, true);
+        $response = $this->patch('client/' . $old_client_data->id, $params);
 
-        $this->assertEquals('success', $response_decoded['status']);
-        $this->assertDatabaseHas('clients', $params['data']);
+        $response->assertStatus(302);
+        $response->assertRedirect('/client');
+        $this->assertTrue(Session::has('success'));
+        $this->assertEquals("Client have been successfully updated", Session::get('success'));
+        $this->assertDatabaseHas('clients', $params);
     }
 
     /**
@@ -110,11 +114,13 @@ class ClientTest extends TestCase
         $old_client_data = Client::factory()->create(['id' => 1]);
         $params = ['id' => 1,];
 
-        $response = $this->delete('/client/' . $old_client_data->id, $params)->getContent();
-        $response_decoded = json_decode($response, true);
+        $response = $this->delete('/client/' . $old_client_data->id, $params);
 
-        $this->assertEquals('success', $response_decoded['status']);
-        $this->assertSoftDeleted('client');
+        $response->assertStatus(302);
+        $response->assertRedirect('/client');
+        $this->assertTrue(Session::has('success'));
+        $this->assertEquals("Client have been successfully deleted", Session::get('success'));
+        $this->assertSoftDeleted('clients', $params);
     }
 
     /**
