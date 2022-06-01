@@ -1,11 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use \Illuminate\Support\Facades\Auth;
 
 use \App\Http\Controllers\{
     ClientController,
     ProjectController,
     TaskController,
+    DashboardController,
+    HomeController
 };
 
 /*
@@ -51,4 +54,11 @@ Route::resource('task',TaskController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard.home');
+});
+
+Auth::routes();
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', function () {
+    return redirect(route('home'));
 });
