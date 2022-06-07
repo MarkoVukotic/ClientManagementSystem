@@ -145,7 +145,7 @@ class ClientTest extends TestCase
     public function does_it_force_delete_safe_deleted_clients()
     {
         $old_client_data = Client::factory()->create(['id' => 1]);
-        $params = ['id' => 1,];
+        $params = ['id' => 1];
 
         $this->delete('/client/' . $old_client_data->id, $params);
 

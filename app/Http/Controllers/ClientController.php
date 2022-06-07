@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreClientRequest;
 use App\Models\Client;
+use App\Services\ClientService;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -13,11 +14,10 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ClientService $clientService)
     {
         try {
-            $clients = Client::orderBy('id', 'DESC')->paginate(15);
-            return response()->view('client.index', ['clients' => $clients]);
+            return $clientService->orderClients();
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
@@ -39,11 +39,10 @@ class ClientController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreClientRequest $request)
+    public function store(StoreClientRequest $request, ClientService $clientService)
     {
         try {
-            Client::create($request->validated());
-            return redirect(route('client.index'))->with('success', 'New client have been created');
+            return $clientService->createClient($request);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
@@ -78,18 +77,10 @@ class ClientController extends Controller
      * @param \App\Models\Client $client
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, Client $client)
+    public function update(Request $request, Client $client, ClientService $clientService)
     {
         try {
-            $client->update([
-                'first_name' => $request->get('first_name'),
-                'last_name' => $request->get('last_name'),
-                'email' => $request->get('email'),
-                'country' => $request->get('country'),
-                'priority' => $request->get('priority'),
-            ]);
-            return redirect('client')->with('success', 'Client have been successfully updated');
-
+            return $clientService->clientUpdate($client, $request);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
@@ -101,43 +92,38 @@ class ClientController extends Controller
      * @param \App\Models\Client $client
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request, ClientService $clientService)
     {
         try {
-            Client::where('id', $request->get('id'))->delete();
-            return redirect('client')->with('success', 'Client have been successfully deleted');
+            return $clientService->clientDestroy($request);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
     }
 
-    public function softDeletedClients()
+    public function softDeletedClients(ClientService $clientService)
     {
         try {
-            $soft_deleted_clients = Client::withTrashed()->where('id', 1)->get();
-            return output($soft_deleted_clients);
-
+            return $clientService->getSoftDeletedClients();
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
     }
 
-    public function forceDeleteSoftDeletedClients()
+    public function forceDeleteSoftDeletedClients(ClientService $clientService)
     {
         try {
-            $force_deleted_clients = Client::withTrashed()->where('id', 1)->forceDelete();
-            return output($force_deleted_clients);
-
+            return $clientService->forceDeleteSoftDeletedClients();
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
     }
 
-    public function bestClients(){
+    public function bestClients(ClientService $clientService)
+    {
         try {
-            $clients = Client::has('project', '>=', 3)->orderBy('id', 'DESC')->paginate(15);
-            return view('client.best')->with(['clients' => $clients]);
-        }catch (\Exception $exception){
+            return $clientService->bestClients();
+        } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
     }
