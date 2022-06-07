@@ -128,15 +128,18 @@ class ClientTest extends TestCase
      */
     public function does_it_get_the_soft_deletes_of_clients()
     {
-        $old_client_data = Client::factory()->create(['id' => 1]);
+        $old_client_data = Client::factory()->create(['id' => 1, 'first_name' => 'Marko', 'last_name' => 'Vukotic']);
         $params = ['id' => 1,];
 
         $this->delete('/client/' . $old_client_data->id, $params);
 
-        $response = $this->get('client/softDeleted')->getContent();
-        $response_decoded = json_decode($response, true);
-        $this->assertEquals('success', $response_decoded['status']);
-        $this->assertEquals($params['id'], $response_decoded['data'][0]['id']);
+        $response = $this->get('client/softDeleted');
+
+        $response->assertStatus(200);
+        $response->assertViewIs('client.softDeletedClients');
+        $response->assertViewHas('deleted_clients');
+        $response->assertSee('Marko');
+        $response->assertSee('Vukotic');
     }
 
     /**
@@ -185,5 +188,26 @@ class ClientTest extends TestCase
         $response->assertViewHas('clients');
         $response->assertSee('Marko');
         $response->assertSee('Vukotic');
+    }
+
+    /**
+     * @test
+     */
+    public function does_it_successfully_restore_the_soft_deleted_client()
+    {
+        $client = Client::factory()->create(['id' => 1, 'first_name' => 'Marko Vukotic']);
+        $params = ['id' => 1,];
+        $this->delete('/client/' . $client->id, $params);
+
+        $params = ['id', $client->id];
+
+        $response = $this->post('/client/'.$client->id .'/restore', $params);
+        $client = Client::find(1);
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/client');
+        $this->assertTrue(Session::has('success'));
+        $this->assertEquals("Client have been successfully restored", Session::get('success'));
+        $this->assertEquals(null, $client->deleted_at);
     }
 }

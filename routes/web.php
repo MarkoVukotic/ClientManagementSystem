@@ -30,6 +30,7 @@ use \App\Http\Controllers\{
 Route::get('client/deleteClient', [ClientController::class, 'destroy'])->name('client.delete');
 Route::get('client/softDeleted', [ClientController::class, 'softDeletedClients']);
 Route::get('client/forceDelete', [ClientController::class, 'forceDeleteSoftDeletedClients']);
+Route::post('client/{id}/restore', [ClientController::class, 'restoreSoftDeletedClients']);
 Route::get('client/best', [ClientController::class, 'bestClients']);
 Route::resource('client',ClientController::class);
 

@@ -25,6 +25,7 @@
                         <li><a class="dropdown-item" href="/client/create">Create Client</a></li>
                         <li><a class="dropdown-item" href="/client">All Clients</a></li>
                         <li><a class="dropdown-item" href="/client/best">Best Clients</a></li>
+                        <li><a class="dropdown-item" href="/client/softDeleted">Deleted Clients</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">

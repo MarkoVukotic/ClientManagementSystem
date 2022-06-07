@@ -119,6 +119,15 @@ class ClientController extends Controller
         }
     }
 
+    public function restoreSoftDeletedClients(ClientService $clientService, $id)
+    {
+        try {
+            return $clientService->restoreSoftDeletedClients($id);
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+        }
+    }
+
     public function bestClients(ClientService $clientService)
     {
         try {
