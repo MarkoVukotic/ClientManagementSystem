@@ -9,15 +9,25 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
+
+    protected $clientService;
+
+    public function __construct(
+        ClientService $clientService
+    )
+    {
+        $this->clientService = $clientService;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(ClientService $clientService)
+    public function index()
     {
         try {
-            return $clientService->orderClients();
+            return $this->clientService->orderClients();
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
@@ -39,10 +49,10 @@ class ClientController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreClientRequest $request, ClientService $clientService)
+    public function store(StoreClientRequest $request)
     {
         try {
-            return $clientService->createClient($request);
+            return $this->clientService->createClient($request);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
@@ -77,10 +87,10 @@ class ClientController extends Controller
      * @param \App\Models\Client $client
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, Client $client, ClientService $clientService)
+    public function update(Request $request, Client $client)
     {
         try {
-            return $clientService->clientUpdate($client, $request);
+            return $this->clientService->clientUpdate($client, $request);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
@@ -92,46 +102,46 @@ class ClientController extends Controller
      * @param \App\Models\Client $client
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
-    public function destroy(Request $request, ClientService $clientService)
+    public function destroy(Request $request)
     {
         try {
-            return $clientService->clientDestroy($request);
+            return $this->clientService->clientDestroy($request);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
     }
 
-    public function softDeletedClients(ClientService $clientService)
+    public function softDeletedClients()
     {
         try {
-            return $clientService->getSoftDeletedClients();
+            return $this->clientService->getSoftDeletedClients();
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
     }
 
-    public function forceDeleteSoftDeletedClients(ClientService $clientService)
+    public function forceDeleteSoftDeletedClients()
     {
         try {
-            return $clientService->forceDeleteSoftDeletedClients();
+            return $this->clientService->forceDeleteSoftDeletedClients();
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
     }
 
-    public function restoreSoftDeletedClients(ClientService $clientService, $id)
+    public function restoreSoftDeletedClients($id)
     {
         try {
-            return $clientService->restoreSoftDeletedClients($id);
+            return $this->clientService->restoreSoftDeletedClients($id);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
     }
 
-    public function bestClients(ClientService $clientService)
+    public function bestClients()
     {
         try {
-            return $clientService->bestClients();
+            return $this->clientService->bestClients();
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
