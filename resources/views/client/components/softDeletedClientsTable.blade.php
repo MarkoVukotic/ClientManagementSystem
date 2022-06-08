@@ -19,7 +19,7 @@
             <td>{{$client->priority}}</td>
             <td>{{$client->project->count()}}</td>
             <td><a href="{{$client->id}}/restore" class="btn btn-warning">Restore</a></td>
-            <td><a href="client/forceDelete/?id={{$client->id}}" class="btn btn-danger">Delete</a></td>
+            <td><a href="forceDelete/{{$client->id}}" class="btn btn-danger">Delete</a></td>
         </tr>
     @endforeach
 </table>

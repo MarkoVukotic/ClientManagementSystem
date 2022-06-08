@@ -59,19 +59,18 @@ class ClientService
     public static function getSoftDeletedClients()
     {
         try {
-            $soft_deleted_clients = Client::withTrashed()->get();
+            $soft_deleted_clients = Client::withTrashed()->orderBy('deleted_at', 'desc')->get();
             return view('client.softDeletedClients')->with(['deleted_clients' => $soft_deleted_clients]);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
     }
 
-    public static function forceDeleteSoftDeletedClients()
+    public static function forceDeleteSoftDeletedClients($id)
     {
         try {
-            $force_deleted_clients = Client::withTrashed()->where('id', 1)->forceDelete();
-            return output($force_deleted_clients);
-
+            Client::withTrashed()->where('id', $id)->forceDelete();
+            return redirect('client')->with('success', 'Client have been successfully deleted');
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
@@ -93,6 +92,16 @@ class ClientService
             $clients = Client::has('project', '>=', 3)->orderBy('id', 'DESC')->paginate(15);
             return view('client.best')->with(['clients' => $clients]);
         } catch (\Exception $exception) {
+            echo $exception->getMessage();
+        }
+    }
+
+    public function displayClient($id)
+    {
+        try {
+            $client = Client::find($id);
+            return view('client.display')->with(['client' => $client]);
+        }catch(\Exception $exception){
             echo $exception->getMessage();
         }
     }

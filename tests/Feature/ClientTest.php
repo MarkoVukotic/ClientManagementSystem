@@ -149,33 +149,34 @@ class ClientTest extends TestCase
     {
         $old_client_data = Client::factory()->create(['id' => 1]);
         $params = ['id' => 1];
-
         $this->delete('/client/' . $old_client_data->id, $params);
 
-        $response = $this->get('client/forceDelete')->getContent();
-        $response_decoded = json_decode($response, true);
+        $response = $this->post('client/forceDelete/' . $old_client_data->id);
 
-        $this->assertEquals('success', $response_decoded['status']);
-        $this->assertDatabaseMissing('clients', $params);
+        $response->assertStatus(302);
+        $this->assertTrue(Session::has('success'));
+        $this->assertEquals("Client have been successfully deleted", Session::get('success'));
     }
 
     /**
      * @test
      */
-    public function does_the_route_for_the_best_clients_exist(){
+    public function does_the_route_for_the_best_clients_exist()
+    {
         $this->get('/client/best')->assertStatus(200);
     }
 
     /**
      * @test
      */
-    public function does_the_route_return_best_clients(){
+    public function does_the_route_return_best_clients()
+    {
 
         $clients = Client::factory(5)->create([
             'first_name' => 'Marko',
             'last_name' => 'Vukotic',
         ])->toArray();
-        foreach($clients as $client){
+        foreach ($clients as $client) {
             Project::factory(3)->create([
                 'client_id' => $client['id']
             ]);
@@ -199,9 +200,7 @@ class ClientTest extends TestCase
         $params = ['id' => 1,];
         $this->delete('/client/' . $client->id, $params);
 
-        $params = ['id', $client->id];
-
-        $response = $this->post('/client/'.$client->id .'/restore', $params);
+        $response = $this->get('/client/' . $client->id . '/restore');
         $client = Client::find(1);
 
         $response->assertStatus(302);
@@ -210,4 +209,36 @@ class ClientTest extends TestCase
         $this->assertEquals("Client have been successfully restored", Session::get('success'));
         $this->assertEquals(null, $client->deleted_at);
     }
+
+    /**
+     * @test
+     */
+    public function does_the_route_for_showing_client_exist()
+    {
+        $client = Client::factory()->create([
+            'id' => 1,
+            'first_name' => 'Marko'
+        ]);
+        $response = $this->get('/client/' . $client->id);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * @test
+     */
+    public function does_it_show_the_correct_client_when_the_more_info_button_is_clicked()
+    {
+        $client = Client::factory()->create([
+            'id' => 1,
+            'first_name' => 'Marko'
+        ]);
+
+        $response = $this->get('/client/display/' . $client->id);
+
+        $response->assertStatus(200);
+        $response->assertViewIs('client.display');
+        $response->assertViewHas('client');
+        $response->assertSee('Marko');
+    }
+
 }
