@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Client::factory(20)->create();
-        Project::factory(20)->create();
-        Task::factory(20)->create();
+        Client::factory(5)->create();
+        Project::factory(5)->create();
+        Task::factory(10)->create();
 
         DB::table('users')->insert([
             'name' => 'Marko',

@@ -31,7 +31,6 @@ class ClientController extends Controller
     )
     {
         $this->clientService = $clientService;
-        $this->clientService = $clientService;
     }
 
     /**

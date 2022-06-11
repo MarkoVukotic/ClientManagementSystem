@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Projects')
 @section('content')
-    <h1>Show Project Page</h1>
+    <h1>Create Project Page</h1>
+    @include('project.components.createProjectForm')
 @endsection

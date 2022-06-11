@@ -3,11 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProjectRequest;
+use App\Models\Client;
 use App\Models\Project;
+use App\Models\User;
+use App\Services\ProjectService;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+
+    /**
+     * @var ProjectService
+     */
+    protected $projectService;
+
+    public function __construct(ProjectService $projectService)
+    {
+        $this->projectService = $projectService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +29,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('project.index');
+        return $this->projectService->showAllProjects();
     }
 
     /**
@@ -25,8 +39,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('project.create');
-
+        return $this->projectService->showFormForCreatingNewProject();
     }
 
     /**
@@ -38,8 +51,7 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         try {
-            Project::create($request->validated());
-            return redirect('project.index')->with('success', 'New project have been created');
+           return $this->projectService->createProject($request);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
