@@ -151,7 +151,7 @@ class ClientTest extends TestCase
         $params = ['id' => 1];
         $this->delete('/client/' . $old_client_data->id, $params);
 
-        $response = $this->post('client/forceDelete/' . $old_client_data->id);
+        $response = $this->get('client/forceDelete/' . $old_client_data->id);
 
         $response->assertStatus(302);
         $this->assertTrue(Session::has('success'));
