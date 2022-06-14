@@ -11,7 +11,7 @@ class ProjectService
 
     public function showAllProjects(){
         try {
-            dd(Project::select('*')->with('user')->get());
+//            dd(Project::select('*')->with('user')->get());
             $projects = Project::select('*')->with('client')->orderBy('id', 'DESC')->paginate(15);
             return view('project.index')->with(['projects' => $projects]);
         }catch (\Exception $exception){
